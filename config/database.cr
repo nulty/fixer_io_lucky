@@ -8,9 +8,9 @@ AppDatabase.configure do |settings|
       database: database_name,
       hostname: ENV["DB_HOST"]? || "localhost",
       # Some common usernames are "postgres", "root", or your system username (run 'whoami')
-      username: ENV["DB_USERNAME"]? || "postgres",
+      username: ENV["DB_USERNAME"]? || "iain",
       # Some Postgres installations require no password. Use "" if that is the case.
-      password: ENV["DB_PASSWORD"]? || "postgres"
+      password: ENV["DB_PASSWORD"]? || ""
     )
   end
 end
