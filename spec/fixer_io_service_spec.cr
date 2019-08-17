@@ -12,18 +12,31 @@ describe FixerIoService do
   end
 
   it "#latest calls the fixer.io API latest" do
-    WebMock.stub(:get, "http://data.fixer.io/api/latest?access_key=asdf").to_return(body: "Hi", headers: {"Host" => "data.fixer.io"}, status: 200)
+    fixture = File.read("#{__DIR__}/fixtures/fixer_latest.json")
+
+    WebMock.stub(:get, "http://data.fixer.io/api/latest?access_key=asdf").to_return(body: fixture, headers: {"Host" => "data.fixer.io"}, status: 200)
 
     response = FixerIoService.new.latest
-    response.body.should eq "Hi"
+
+    parsed_response = JSON.parse(response.body)
+    parsed_response["success"].should be_true
+    parsed_response["base"].should eq "EUR"
+    parsed_response.dig("rates", "CAD").should eq 1.472846
+
     response.success?.should be_true
   end
 
-  it "#currencies calls the fixer.io API symbols" do
-    WebMock.stub(:get, "http://data.fixer.io/api/symbols?access_key=asdf").to_return(body: "Hi", headers: {"Host" => "data.fixer.io"}, status: 200)
+ it "#currencies calls the fixer.io API symbols" do
+    fixture = File.read("#{__DIR__}/fixtures/fixer_symbols.json")
+
+    WebMock.stub(:get, "http://data.fixer.io/api/symbols?access_key=asdf").to_return(body: fixture, headers: {"Host" => "data.fixer.io"}, status: 200)
 
     response = FixerIoService.new.currencies
-    response.body.should eq "Hi"
+
+    parsed_response = JSON.parse(response.body)
+    parsed_response["success"].should be_true
+    parsed_response.dig("symbols", "AED").should eq "United Arab Emirates Dirham"
+
     response.success?.should be_true
   end
 end

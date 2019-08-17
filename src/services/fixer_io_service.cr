@@ -5,17 +5,17 @@ class FixerIoService
   property client
 
   def initialize
+    @headers = HTTP::Headers{"Content-Type" => "application/javascript", "Accept" => "application/javascript"}
     @client = HTTP::Client.new(BASE_URL)
   end
 
 
   def latest
-    params = HTTP::Params.encode({"access_key" => API_KEY})
-    @client.get(uri("latest"))
+    @client.get(uri("latest"), headers: headers)
   end
 
   def currencies
-    @client.get(uri("symbols"))
+    @client.get(uri("symbols"), headers: headers)
   end
 
   private def params(options = NamedTuple.new) : String
@@ -27,5 +27,12 @@ class FixerIoService
   private def uri(path, options = NamedTuple.new)
     "/api/#{path}?" + params(options)
   end
-end
 
+  private def headers(options = {} of String => String)
+    hdrs = @headers
+    options.each do |k,v|
+      hdrs.add(k,v)
+    end
+    hdrs
+  end
+end
