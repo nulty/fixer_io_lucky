@@ -23,6 +23,10 @@ dependencies:
   dotenv:
     github: gdotdesign/cr-dotenv
     version: 0.2.0
+  webmock:
+    github: manastech/webmock.cr
+    version: 0.12.1
+
 
   lucky_flow:
     github: luckyframework/lucky_flow

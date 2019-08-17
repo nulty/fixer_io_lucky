@@ -72,6 +72,10 @@ shards:
     github: luckyframework/teeplate
     version: 0.8.0
 
+  webmock:
+    github: manastech/webmock.cr
+    version: 0.12.1
+
   wordsmith:
     github: luckyframework/wordsmith
     version: 0.2.0
