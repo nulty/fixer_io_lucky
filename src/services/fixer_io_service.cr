@@ -11,8 +11,21 @@ class FixerIoService
 
   def latest
     params = HTTP::Params.encode({"access_key" => API_KEY})
-    uri = "/api/latest?" + params
-    @client.get(uri)
+    @client.get(uri("latest"))
+  end
+
+  def currencies
+    @client.get(uri("symbols"))
+  end
+
+  private def params(options = NamedTuple.new) : String
+    defaults = {access_key: API_KEY}
+    opts = defaults.merge(options)
+    HTTP::Params.encode(opts)
+  end
+
+  private def uri(path, options = NamedTuple.new)
+    "/api/#{path}?" + params(options)
   end
 end
 
