@@ -6,7 +6,7 @@
 #
 # Use `Db::CreateSampleSeeds` if your only want to add sample data helpful for
 # development.
-class FetchPrices < LuckyCli::Task
+class FetchCurrencies < LuckyCli::Task
   summary "Add database records required for the app to work"
 
   def call
