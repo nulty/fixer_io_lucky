@@ -13,7 +13,7 @@ class FetchCurrencies < LuckyCli::Task
     puts "Calling the Fixer.io API to create currencies in the Database"
     response = FixerIoService.new.currencies
 
-    currencies = JSON.parse(response)["symbols"]
+    currencies = CurrenciesResponse.from_json(response.body)
 
     puts "Saving the currencies to the database"
     SaveCurrency.import(currencies)
