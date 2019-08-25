@@ -11,7 +11,6 @@ jobs: # a collection of jobs
           DB_PASSWORD: password
     steps: # a collection of executable steps
       - checkout # checks out source code to working directory
-      - run: export PATH="/usr/local/bin:/root/.yarn/bin:/root/.config/yarn/global/node_modules/.bin:$PATH"
       - restore_cache:
           name: Restore Yarn Package Cache
           keys: yarn-packages-{{ checksum "yarn.lock" }}
@@ -39,7 +38,6 @@ jobs: # a collection of jobs
           name: Install dependencies
           command: |
             yarn dev
-            shards install
       - run:
           name: Database create/migrate
           command: |
