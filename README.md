@@ -1,5 +1,8 @@
 # fixer_io_lucky
 
+[![CircleCI](https://circleci.com/gh/nulty/fixer_io_lucky/tree/master.svg?style=svg)](https://circleci.com/gh/nulty/fixer_io_lucky/tree/master)
+
+
 ## Lucky and Crystal
 
 ### Setting up the project
