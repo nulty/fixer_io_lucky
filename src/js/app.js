@@ -12,6 +12,16 @@ Turbolinks.start();
 
 // If using Turbolinks, you can attach events to page load like this:
 //
-// document.addEventListener("turbolinks:load", function() {
-//   ...
-// })
+document.addEventListener("turbolinks:load", function() {
+  document.querySelector("#conversion-currency").addEventListener("change", function() {
+
+  })
+  document.querySelector("#base-currency").addEventListener("change", function() {
+
+  })
+  document.getElementById("converter-form").addEventListener("ajax:success", function(e) {
+    let body = e.detail[0]
+    console.log(body.data)
+    let output = document.querySelector("#converted-rate").innerHTML = body.data;
+  })
+})

@@ -1,31 +1,29 @@
 class Dashboard::ShowPage < MainLayout
   needs base_currencies : CurrencyQuery
   needs conversion_currencies : CurrencyQuery
-  needs rates : RateQuery
 
   def content
     div class: "columns" do
-      div do
-        ul do
-          @base_currencies.each do |curr|
-            li do
-              text curr.name
+      form id: "converter-form", action: "/rates", method: "POST", "data-remote": "true" do
+        div do
+          select_tag id: "base-currency", name: "base-currency" do
+            option "Pick a Base Currency"
+            @base_currencies.each do |curr|
+              option curr.name, value: curr.id.to_s
             end
           end
         end
-      end
-      div do
-        ul do
-          @conversion_currencies.each do |curr|
-            li curr.name
+        div do
+          select_tag id: "conversion-currency", name: "conversion-currency"  do
+            option "Pick a Conversion Currency"
+            @conversion_currencies.each do |curr|
+              option curr.name, value: curr.id.to_s
+            end
           end
         end
-      end
-      div do
-        ul do
-          @rates.each do |rate|
-            li rate.rate.to_s
-          end
+        button "Submit", type: "submit"
+        div do
+          span id: "converted-rate"
         end
       end
     end
