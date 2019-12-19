@@ -9,9 +9,12 @@ class FixerIoService
     @client = HTTP::Client.new(BASE_URL)
   end
 
+  def latest(base="EUR")
+    @client.get(uri("latest", {base: base}), headers: headers)
+  end
 
-  def latest
-    @client.get(uri("latest"), headers: headers)
+  def historical(date : String, base="EUR")
+    @client.get(uri(date, {base: base}), headers: headers)
   end
 
   def currencies
