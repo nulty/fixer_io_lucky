@@ -28,8 +28,12 @@ class FetchRates < LuckyCli::Task
 
     rates = RatesResponse.from_json(response.body)
 
-    Lucky.logger.info "Saving the rates to the database"
+    if rates.success == false && (error = rates.error)
+      Lucky.logger.info "ERROR: '#{error.type}'"
+      exit(1)
+    end
 
+    Lucky.logger.info "Saving the rates to the database"
     SaveRate.import(rates)
   end
 
@@ -38,14 +42,14 @@ class FetchRates < LuckyCli::Task
 
     rates = RatesResponse.from_json(response.body)
 
-    if rates.success == true
-      Lucky.logger.info "Saving the rates to the database"
-
-      SaveRate.import(rates)
-    elsif rates.success == false && (error = rates.error)
-      Lucky.logger.info "An error occurred:\n"
-      Lucky.logger.info error.type
+    if rates.success == false && (error = rates.error)
+      Lucky.logger.info "ERROR: '#{error.type}'"
+      Lucky.logger.info
+      exit(1)
     end
+
+    Lucky.logger.info "Saving the rates to the database"
+    SaveRate.import(rates)
   end
 
   def date_arg : String
