@@ -10,14 +10,15 @@ class FetchCurrencies < LuckyCli::Task
   summary "Add database records required for the app to work"
 
   def call
-    puts "Calling the Fixer.io API to create currencies in the Database"
+    Lucky.logger.info "Calling the Fixer.io API to create currencies in the Database"
     response = FixerIoService.new.currencies
 
     currencies = CurrenciesResponse.from_json(response.body)
 
-    puts "Saving the currencies to the database"
+    Lucky.logger.info "Saving the currencies to the database"
+
     SaveCurrency.import(currencies)
 
-    puts "Done!"
+    Lucky.logger.info "Done!"
   end
 end
