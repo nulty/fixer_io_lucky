@@ -4,12 +4,14 @@ class FetchRates < LuckyCli::Task
 
   def call
     all_rates = ENV["ALL_RATES"]?
-    raise ArgumentError.new("DATE is required") unless ENV["DATE"]?
+    unless ENV["DATE"]?
+      Lucky.logger.error("DATE is required")
+      exit
+    end
 
+    Lucky.logger.info "Date: #{date_arg}"
+    Lucky.logger.info "Calling the Fixer.io API to create rates in the Database"
 
-    puts "Date: #{date_arg}"
-
-    puts "Calling the Fixer.io API to create rates in the Database"
     if all_rates
       CurrencyQuery.all.code(AVAILABLE_BASE).each do |curr|
         perform(curr)
@@ -18,7 +20,7 @@ class FetchRates < LuckyCli::Task
       perform
     end
 
-    puts "Done!"
+    Lucky.logger.info "Done!"
   end
 
   private def perform
@@ -26,7 +28,7 @@ class FetchRates < LuckyCli::Task
 
     rates = RatesResponse.from_json(response.body)
 
-    puts "Saving the rates to the database"
+    Lucky.logger.info "Saving the rates to the database"
 
     SaveRate.import(rates)
   end
@@ -37,12 +39,12 @@ class FetchRates < LuckyCli::Task
     rates = RatesResponse.from_json(response.body)
 
     if rates.success == true
-      puts "Saving the rates to the database"
+      Lucky.logger.info "Saving the rates to the database"
 
       SaveRate.import(rates)
     elsif rates.success == false && (error = rates.error)
-      puts "An error occurred:\n"
-      puts error.type
+      Lucky.logger.info "An error occurred:\n"
+      Lucky.logger.info error.type
     end
   end
 
